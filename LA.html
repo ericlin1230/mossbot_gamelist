@@ -11,6 +11,18 @@
         <input type="text" autocomplete="chrome-off" id="reason" name="reason" required><br>
         <label for="stronghold">Stronghold:</label>
         <input type="text" autocomplete="chrome-off" id="stronghold" name="stronghold" required><br>
+        <label for="gate">Gate:</label>
+        <input type="text" autocomplete="chrome-off" id="gate" name="gate"><br>
+        <label for="gate">Screenshot:</label>
+        <input type="text" autocomplete="chrome-off" id="screenshot" name="screenshot"><br>
+        <label for="gate">Image url:</label>
+        <input type="text" autocomplete="chrome-off" id="imgurl" name="imgurl"><br>
+        <label for="gate">Guild:</label>
+        <input type="text" autocomplete="chrome-off" id="guild" name="guild"><br>
+        <label for="gate">Severity:</label>
+        <input type="text" autocomplete="chrome-off" id="sev" name="sev"><br>
+        <label for="gate">Raid:</label>
+        <input type="text" autocomplete="chrome-off" id="raid" name="raid"><br>
         <input type="submit">
     </form>
     <script>
@@ -21,22 +33,53 @@
             const data = new FormData(event.target);
 
             const url = 'http://104.196.253.129:3000/addLA';
-            const name = data.get('name');
+            const name = data.get('LAname');
             const reason = data.get('reason');
             const stronghold = data.get('stronghold');
-
+            var screenshot = '';
+            var imgurl = '';
+            var otherurl = '';
+            var guild = '';
+            var sev = 2;
+            var raid = '';
+            var gate = '';
+            if (data.get('imageUrl') != null) {
+                imgurl = data.get('imageUrl');
+            }
+            if (data.get('screenshot') != null) {
+                screenshot = data.get('screenshot');
+            }
+            if (data.get('otherUrl') != null) {
+                otherurl = data.get('otherUrl');
+            }
+            if (data.get('guild') != null) {
+                guild = data.get('guild');
+            }
+            if (data.get('severity') != null) {
+                sev = data.get('severity');
+            }
+            if (data.get('raid') != null) {
+                raid = data.get('raid');
+            }
+            if (data.get('gate') != null) {
+                gate = data.get('gate');
+            }
             fetch(
                 url,
                 {
                     headers: { "Content-Type": "application/json" },
                     method: "POST",
-                    body: JSON.stringify({ 'name': name, 'reason': reason, 'stronghold': stronghold })
+                    body: JSON.stringify({
+                        'name': name, 'reason': reason, 'stronghold': stronghold,
+                        'imageUrl': imgurl, 'screenshot': screenshot, 'otherUrl': otherurl, 'raid': raid, 'gate': gate,
+                        'severity': sev
+                    })
                 }
             )
                 .then(data => data.json())
                 .then((json) => {
                     alert(JSON.stringify(json));
-                    console.log(json);
+                    // console.log(json);
                     // document.getElementById("form").reset();
                 });
         }
