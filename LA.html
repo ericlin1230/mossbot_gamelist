@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h1>Lost Ark</h1>
+
+    <form>
+        <label for="name">Name:</label>
+        <input type="text" autocomplete="chrome-off" id="LAname" name="LAname" required><br>
+        <label for="reason">Reason:</label>
+        <input type="text" autocomplete="chrome-off" id="reason" name="reason" required><br>
+        <label for="stronghold">Stronghold:</label>
+        <input type="text" autocomplete="chrome-off" id="stronghold" name="stronghold" required><br>
+        <input type="submit">
+    </form>
+    <script>
+
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            const data = new FormData(event.target);
+
+            const url = 'http://104.196.253.129:3000/addLA';
+            const name = data.get('name');
+            const reason = data.get('reason');
+            const stronghold = data.get('stronghold');
+
+            fetch(
+                url,
+                {
+                    headers: { "Content-Type": "application/json" },
+                    method: "POST",
+                    body: JSON.stringify({ 'name': name, 'reason': reason, 'stronghold': stronghold })
+                }
+            )
+                .then(data => data.json())
+                .then((json) => {
+                    alert(JSON.stringify(json));
+                    console.log(json);
+                    // document.getElementById("form").reset();
+                });
+        }
+
+        const form = document.querySelector('form');
+        form.addEventListener('submit', handleSubmit);
+
+    </script>
+</body>
+
+</html>
